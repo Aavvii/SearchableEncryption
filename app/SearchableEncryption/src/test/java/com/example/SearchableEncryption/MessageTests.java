@@ -26,7 +26,6 @@ public class MessageTests {
                 .andExpect(content().string("[]"));
     }
 
-
     @org.junit.Test
     public void addMessageEmptyDB() throws Exception {
         JSONObject jo = new JSONObject();

@@ -45,4 +45,11 @@ public class AccountController {
     public void updateAccount(@PathVariable("id") long id, @Valid @NotNull @RequestBody Account accountToUpdate) {
         accountRepo.save(accountToUpdate);
     }
+
+
+    @GetMapping(path="username={username}/password={password}")
+    public Account getAccountByUsernameAndPassword(@PathVariable("username") String username, @PathVariable("password") String password) {
+        return accountRepo.findByUserNameAndPassword(username, password)
+                .orElse(null);
+    }
 }

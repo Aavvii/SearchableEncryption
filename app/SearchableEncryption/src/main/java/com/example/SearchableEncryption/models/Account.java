@@ -18,25 +18,28 @@ public class Account {
     @Column(name = "lastname")
     private String lastName;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "username")
     private String userName;
 
     @Column(name = "password")
     private String password;
 
-    public Account() {
-
-    }
+    public Account() {}
 
     public Account(@JsonProperty("id") long id,
                    @JsonProperty("firstname") String firstName,
                    @JsonProperty("lastname") String lastName,
+                   @JsonProperty("email") String email,
                    @JsonProperty("username") String userName,
                    @JsonProperty("password") String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
+        this.email = email;
         this.password = password;
     }
 
@@ -62,6 +65,14 @@ public class Account {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUserName() {
