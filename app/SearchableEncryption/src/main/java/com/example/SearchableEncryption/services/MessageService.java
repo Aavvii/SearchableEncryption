@@ -1,6 +1,8 @@
 package com.example.SearchableEncryption.services;
 
+import com.example.SearchableEncryption.dao.IAccountDao;
 import com.example.SearchableEncryption.dao.IMessageDao;
+import com.example.SearchableEncryption.models.Account;
 import com.example.SearchableEncryption.models.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

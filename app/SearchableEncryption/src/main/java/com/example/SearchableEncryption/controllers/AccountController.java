@@ -30,18 +30,18 @@ public class AccountController {
         return accountRepo.findAll();
     }
 
-    @GetMapping(path="{id}")
+    @GetMapping(path="id={id}")
     public Account getAccountById(@PathVariable("id") long id) {
         return accountRepo.findById(id)
                 .orElse(null);
     }
 
-    @DeleteMapping(path="{id}")
+    @DeleteMapping(path="id={id}")
     public void deleteAccountById(@PathVariable("id") long id) {
         accountRepo.deleteById(id);
     }
 
-    @PutMapping(path="{id}")
+    @PutMapping(path="id={id}")
     public void updateAccount(@PathVariable("id") long id, @Valid @NotNull @RequestBody Account accountToUpdate) {
         accountRepo.save(accountToUpdate);
     }

@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "firstname")
@@ -45,7 +45,7 @@ public class Account {
     }
 
     public void setId(long id) {
-        id = id;
+        this.id = id;
     }
 
     public String getFirstName() {

@@ -1,5 +1,6 @@
 package com.example.SearchableEncryption.controllers;
 
+import com.example.SearchableEncryption.models.Account;
 import com.example.SearchableEncryption.models.Message;
 import com.example.SearchableEncryption.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
