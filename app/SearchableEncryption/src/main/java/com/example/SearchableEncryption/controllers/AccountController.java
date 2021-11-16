@@ -2,6 +2,7 @@ package com.example.SearchableEncryption.controllers;
 
 import com.example.SearchableEncryption.models.Account;
 import com.example.SearchableEncryption.repository.AccountRepository;
+import com.example.SearchableEncryption.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,43 +14,44 @@ import java.util.List;
 @RestController
 public class AccountController {
 
-    private final AccountRepository accountRepo;
+    private final AccountService accountService;
 
     @Autowired
-    public AccountController(AccountRepository accountRepo) {
-        this.accountRepo = accountRepo;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @PostMapping
     public void addAccount(@RequestBody Account account){
-        accountRepo.save(account);
+        accountService.save(account);
     }
 
     @GetMapping
     public List<Account> getAllAccounts() {
-        return accountRepo.findAll();
+        System.out.println("I just gotAllAccounts()");
+        return accountService.findAll();
     }
 
     @GetMapping(path="id={id}")
     public Account getAccountById(@PathVariable("id") long id) {
-        return accountRepo.findById(id)
+        return accountService.findById(id)
                 .orElse(null);
     }
 
     @DeleteMapping(path="id={id}")
     public void deleteAccountById(@PathVariable("id") long id) {
-        accountRepo.deleteById(id);
+        accountService.deleteById(id);
     }
 
     @PutMapping(path="id={id}")
     public void updateAccount(@PathVariable("id") long id, @Valid @NotNull @RequestBody Account accountToUpdate) {
-        accountRepo.save(accountToUpdate);
+        accountService.save(accountToUpdate);
     }
 
 
     @GetMapping(path="username={username}/password={password}")
     public Account getAccountByUsernameAndPassword(@PathVariable("username") String username, @PathVariable("password") String password) {
-        return accountRepo.findByUserNameAndPassword(username, password)
+        return accountService.findByUsernameAndPassword(username, password)
                 .orElse(null);
     }
 }
