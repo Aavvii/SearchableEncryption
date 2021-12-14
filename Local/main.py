@@ -5,6 +5,7 @@ import requests
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget
 from PyQt5.QtGui import QPixmap
+import cryptool
 
 
 class WelcomeScreen(QDialog):
@@ -31,9 +32,6 @@ class LoginScreen(QDialog):
         uic.loadUi("login.ui", self)
         self.passwordfield.setEchoMode(QtWidgets.QLineEdit.Password)
         self.login.clicked.connect(self.loginfunction)
-        print("aaaa")
-        # self.login.clicked.connect(self.gotosendMess)
-        print("aaaa--")
 
     def gotosendMess(self):
         send = SendMessage(self.user)
@@ -47,19 +45,18 @@ class LoginScreen(QDialog):
         if len(self.user) == 0 or len(password) == 0:
             self.error.setText("Please input all fields.")
         else:
+            print(self.user)
             self.gotosendMess()
-        # r = requests.get(f'http://127.0.0.1:8082/api/v1/account/username={user}/password={password}/')
-        # if r.text is "":
-        #     print("No account")
-        #     self.error.setText("Invalid username or password")
-        # else:
-        #     print(f"{r.text}")
-        #     self.error.setText("Account found")
 
-        # print("Ceva sigur s-intamplat 000")
-        # # sendMessage = SendMessage(user)
-        # print("Ceva sigur s-intamplat")
-        # self.gotosendMess()
+        # else:
+        #     r = requests.get(f'http://127.0.0.1:8082/api/v1/account/username={self.user}/password={password}/')
+        #     if r.text is "":
+        #         print("No account")
+        #         self.error.setText("Invalid username or password")
+        #     else:
+        #         print(f"{r.text}")
+        #         self.error.setText("Account found")
+        #         self.gotosendMess()
 
 
 class CreateAccScreen(QDialog):
@@ -136,10 +133,14 @@ class SendMessage(QDialog):
 
     def sendToServer(self):
         message = self.email.text()
+        to_user = self.password.text()
         print(message)
+        encrypted_message = cryptool.encrypt_sentence(message, 69)
+        print(encrypted_message)
 
+        print(cryptool.decrypt_sentence(encrypted_message, 69))
 
-        myobj = {'message': message, 'user': self.user}
+        myobj = {'message': encrypted_message, 'user': self.user, 'to_user': to_user}
 
         print(myobj)
 

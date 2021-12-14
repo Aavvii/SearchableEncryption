@@ -2,7 +2,7 @@
 
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
-import random
+import numpy as np
 
 key = b"1234567812345678"
 iv = b"1111111111111111"
@@ -23,8 +23,8 @@ def encrypt_block(block, seed):
     print("Encrypted: ", ewi)
     print(len(ewi))
     li = ewi[:n - m]
-    random.seed(a=seed)
-    si = random.randbytes(n - m)
+    np.random.seed(seed)
+    si = np.random.bytes(n-m)
 
     f = AES.new(key=kp, mode=AES.MODE_ECB)
 
@@ -44,8 +44,9 @@ def encrypt_block(block, seed):
 def decrypt_block(cryptotext, seed):
     aesDec = AES.new(key=key, mode=AES.MODE_CBC, iv=iv)
 
-    random.seed(a=seed)
-    si = random.randbytes(n - m)
+    np.random.seed(seed)
+    # si = random.randbytes(n - m)
+    si = np.random.bytes(n-m)
 
     li = byte_xor(si, cryptotext[:n - m])
 
@@ -78,6 +79,7 @@ def encrypt_sentence(sentence="", seed=2):
         )
     global UNIQUE_SENTENCE
     UNIQUE_SENTENCE = cryptoText
+    print('US: ', UNIQUE_SENTENCE)
     return cryptoText
 
 
@@ -88,8 +90,9 @@ def decrypt_sentence(cryptotext, seed):
         sentence += decrypt_block(block, seed)
         sentence += b' '
 
-    print (sentence.decode(encoding='utf-8'))
+    print('Decrypted: ', sentence.decode(encoding='utf-8'))
     return sentence[:-1]
+
 
 def search_in_crypto(cryptedWord, ki, cryptotext):
 
@@ -111,27 +114,26 @@ def search_in_crypto(cryptedWord, ki, cryptotext):
     return False
 
 
-
 def byte_xor(ba1, ba2):
     return bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
 
 
-str = "sad"
-print(str * 3)
-print(type(str.encode(encoding='utf-8')))
-print(len(str))
-print(len(str.encode(encoding='utf-8')))
-
-word = b"attack"
-decrypt_block(encrypt_block(pad(word, AES.block_size), 100), 100)
-
-sentence = "Ii voi ierta pe acesti indivizi because i am very kind"
-print('This will be the encryption: ')
-print(decrypt_sentence(encrypt_sentence(sentence, 100), 100))
-
-wordToSearch = b'\xc9\x88t@dA\x8d\x0br\xbb\xcbe\x05\xf1\xab7'
-wordToSearchKi = b'\xcc\xf2$kKp\x1b\x9c\x8ez\x1e"\x9f\xdfX\xd2'
-
-print(search_in_crypto(wordToSearch, wordToSearchKi, UNIQUE_SENTENCE))
+# str = "sad"
+# print(str * 3)
+# print(type(str.encode(encoding='utf-8')))
+# print(len(str))
+# print(len(str.encode(encoding='utf-8')))
+#
+# word = b"attack"
+# decrypt_block(encrypt_block(pad(word, AES.block_size), 100), 100)
+#
+# sentence = "Ii voi ierta pe acesti indivizi because i am very kind"
+# print('This will be the encryption: ')
+# print(decrypt_sentence(encrypt_sentence(sentence, 100), 100))
+#
+# wordToSearch = b'\xc9\x88t@dA\x8d\x0br\xbb\xcbe\x05\xf1\xab6'
+# wordToSearchKi = b'\xcc\xf2$kKp\x1b\x9c\x8ez\x1e"\x9f\xdfX\xd2'
+#
+# print(search_in_crypto(wordToSearch, wordToSearchKi, UNIQUE_SENTENCE))
 
 # TODO: Test more the search
