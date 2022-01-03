@@ -7,3 +7,13 @@ Trello link: https://trello.com/invite/b/o0MNjrn9/14ecbaaafe2225b9ccc168b8ca6053
 
 UML Diagram:
 ![alt text](https://github.com/Aavvii/SearchableEncryption/blob/main/SearchableEncryptionUML.drawio.png?raw=true)
+
+Performance testing using Locust and python.
+
+Test: 
+10 req/s
+3 users/s
+
+![alt text](https://github.com/Aavvii/SearchableEncryption/API/stress_tests_locust/locust.png?raw=true)
+
+![alt text](https://github.com/Aavvii/SearchableEncryption/API/stress_tests_locust/results.png?raw=true)
