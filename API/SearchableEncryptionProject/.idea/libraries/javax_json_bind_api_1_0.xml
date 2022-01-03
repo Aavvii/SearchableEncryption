@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="javax.json.bind-api-1.0">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../jar_files (1)/javax.json.bind-api-1.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
