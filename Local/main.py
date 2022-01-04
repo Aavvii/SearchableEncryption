@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QDialog, QApplication, QWidget
 from PyQt5.QtGui import QPixmap
 import cryptool
 
+user_logged_in = ''
 
 class WelcomeScreen(QDialog):
     def __init__(self):
@@ -66,6 +67,8 @@ class LoginScreen(QDialog):
             else:
                 print(f"{r.text}")
                 self.error.setText("Account found")
+                global user_logged_in
+                user_logged_in = r.json()
                 self.gotosendMess()
 
 
@@ -145,6 +148,27 @@ class SendMessage(QDialog):
         super(SendMessage, self).__init__()
         uic.loadUi("WORK2.ui", self)
         self.send.clicked.connect(self.sendToServer)
+        self.createaccbutton.clicked.connect(self.search_user)
+
+    def search_user(self, user):
+        r = requests.post(
+            url=f'http://127.0.0.1:8080/searchable-encryption/accounts/auth',
+            json={
+                "username": user
+            },
+            headers={
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        )
+        if r.status_code != 200:
+            print("No account")
+            self.error.setText("Invalid username or password")
+            return r.json()['id']
+        else:
+            print(f"{r.text}")
+            self.error.setText("Account found")
+            return False
 
     def sendToServer(self):
         message = self.email.text()
@@ -155,19 +179,25 @@ class SendMessage(QDialog):
 
         print(cryptool.decrypt_sentence(encrypted_message, 69))
 
-        myobj = {'text': encrypted_message, 'sender': self.user, 'receiver': to_user}
+        id = self.search_user(self, to_user)
 
-        print(myobj)
+        if id:
+            # global user_logged_in
+            myobj = {'text': encrypted_message, 'sender_id': user_logged_in['id'], 'receiver_id': id}
 
-        headers = {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
-        }
+            print(myobj)
 
-        try:
-            x = requests.post('http://127.0.0.1:8082/api/v1/message', json=myobj, headers=headers)
-            print(x.text)
-        except:
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+
+            # try:
+                # x = requests.post('http://127.0.0.1:8082/api/v1/message', json=myobj, headers=headers)
+                # print(x.text)
+            # except:
+            #     print("Could not send message")
+        else:
             print("Could not send message")
 
 
