@@ -95,6 +95,12 @@ public class AccountMapper extends DataMapper<Account, Long> implements IAccount
     }
 
     @Override
+    public Account getAccountByUsername(String username) {
+        String qlString = "select e from " + entityClass.getSimpleName() + " e WHERE e.username = \'" + username + "\'";
+        return (Account) entityManager.createQuery(qlString).getSingleResult();
+    }
+
+    @Override
     public List<Account> getAccountBy(String email) {
         String qlString = "select e from " + entityClass.getSimpleName() + " e WHERE e.email = \'" + email + "\'";
         return entityManager.createQuery(qlString).getResultList();

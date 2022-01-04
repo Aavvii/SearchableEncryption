@@ -6,6 +6,7 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget
 from PyQt5.QtGui import QPixmap
 import cryptool
+from datetime import datetime
 
 user_logged_in = ''
 
@@ -145,60 +146,52 @@ class FillProfileScreen(QDialog):
 class SendMessage(QDialog):
     def __init__(self, user):
         self.user = user
+        self.receiver_id = False
         super(SendMessage, self).__init__()
         uic.loadUi("WORK2.ui", self)
         self.send.clicked.connect(self.sendToServer)
         self.createaccbutton.clicked.connect(self.search_user)
 
-    def search_user(self, user):
-        r = requests.post(
-            url=f'http://127.0.0.1:8080/searchable-encryption/accounts/auth',
-            json={
-                "username": user
-            },
-            headers={
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
-            }
+    def search_user(self):
+        to_user = self.password.text()
+        r = requests.get(
+            url=f'http://127.0.0.1:8080/searchable-encryption/accounts/id/{to_user}'
         )
         if r.status_code != 200:
             print("No account")
-            self.error.setText("Invalid username or password")
-            return r.json()['id']
+            self.searchLable.setText("The user doesn't exist!!!")
         else:
             print(f"{r.text}")
-            self.error.setText("Account found")
-            return False
+            self.receiver_id = int(r.text)
+            self.searchLable.setText("The user exists. U can send message to him <3")
 
     def sendToServer(self):
         message = self.email.text()
-        to_user = self.password.text()
         print(message)
         encrypted_message = cryptool.encrypt_sentence(message, 69)
         print(encrypted_message)
 
         print(cryptool.decrypt_sentence(encrypted_message, 69))
 
-        id = self.search_user(self, to_user)
-
-        if id:
+        if self.receiver_id and message:
             # global user_logged_in
-            myobj = {'text': encrypted_message, 'sender_id': user_logged_in['id'], 'receiver_id': id}
+            myobj = {'text': str(encrypted_message), 'sender_id': user_logged_in['id'], 'receiver_id': self.receiver_id, "sentDate": str(datetime.now()), "category": "spam"}
 
             print(myobj)
 
             headers = {
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
+                'Content-type': 'application/json'
             }
 
-            # try:
-                # x = requests.post('http://127.0.0.1:8082/api/v1/message', json=myobj, headers=headers)
-                # print(x.text)
-            # except:
-            #     print("Could not send message")
+            try:
+                x = requests.post('http://127.0.0.1:8080/searchable-encryption/messages', json=myobj, headers=headers)
+                print(x.text)
+                print("Message sent succesfully")
+                self.ifSendSucc.setText("Message sent succesfully")
+            except:
+                self.ifSendSucc.setText("Server error")
         else:
-            print("Could not send message")
+            self.ifSendSucc.setText("The message is Empty OR you didn't search for a user >:(")
 
 
 # main

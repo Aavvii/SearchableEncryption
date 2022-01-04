@@ -8,6 +8,7 @@ import java.util.List;
 public interface IAccountMapper {
 
     List<Account> getAllAccounts();
+    Account getAccountByUsername(String username);
 
     Status getAccountStatus(long accountId);
 

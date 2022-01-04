@@ -34,6 +34,16 @@ public class AccountResource {
     }
 
     @GET
+    @Path("/id/{username}")
+    public long getAccountIdByUsername(@PathParam("username") String username) {
+        try {
+            return accountMapper.getAccountByUsername(username).getId();
+        } catch (NoResultException e) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
+
+    @GET
     @Path("/em/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Account> getAccountBy(@PathParam("email") String email) {
