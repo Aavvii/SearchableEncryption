@@ -44,19 +44,29 @@ class LoginScreen(QDialog):
         #
         if len(self.user) == 0 or len(password) == 0:
             self.error.setText("Please input all fields.")
-        else:
-            print(self.user)
-            self.gotosendMess()
-
         # else:
-        #     r = requests.get(f'http://127.0.0.1:8082/api/v1/account/username={self.user}/password={password}/')
-        #     if r.text is "":
-        #         print("No account")
-        #         self.error.setText("Invalid username or password")
-        #     else:
-        #         print(f"{r.text}")
-        #         self.error.setText("Account found")
-        #         self.gotosendMess()
+        #     print(self.user)
+        #     self.gotosendMess()
+
+        else:
+            r = requests.post(
+                url=f'http://127.0.0.1:8080/searchable-encryption/accounts/auth',
+                json={
+                    "username": self.user,
+                    "password": password
+                },
+                headers={
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            )
+            if r.status_code != 200:
+                print("No account")
+                self.error.setText("Invalid username or password")
+            else:
+                print(f"{r.text}")
+                self.error.setText("Account found")
+                self.gotosendMess()
 
 
 class CreateAccScreen(QDialog):
@@ -102,16 +112,20 @@ class FillProfileScreen(QDialog):
         self.user = user
         self.password = password
 
+    def gotologin(self):
+        login = LoginScreen()
+        widget.addWidget(login)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+
     def fillprofileScreenfunction(self):
         print("here")
         email = self.email.text()
-        firstname = self.firstname.text()
-        lastname = self.lastname.text()
-        id = self.id + 1
+        # firstname = self.firstname.text()
+        # lastname = self.lastname.text()
+        # id = self.id + 1
         self.id = self.id + 1
 
-        myobj = {'id': id, 'firstname': firstname, 'lastname': lastname, 'email': email, 'username': self.user,
-                 'password': self.password}
+        myobj = {'email': email, 'username': self.user, 'password': self.password}
 
         print(myobj)
 
@@ -120,8 +134,9 @@ class FillProfileScreen(QDialog):
             'Accept': 'application/json'
         }
 
-        x = requests.post('http://127.0.0.1:8082/api/v1/account', json=myobj, headers=headers)
+        x = requests.post('http://localhost:8080/searchable-encryption/accounts', json=myobj, headers=headers)
         print(x.text)
+        self.gotologin()
 
 
 class SendMessage(QDialog):
@@ -140,7 +155,7 @@ class SendMessage(QDialog):
 
         print(cryptool.decrypt_sentence(encrypted_message, 69))
 
-        myobj = {'message': encrypted_message, 'user': self.user, 'to_user': to_user}
+        myobj = {'text': encrypted_message, 'sender': self.user, 'receiver': to_user}
 
         print(myobj)
 
@@ -154,7 +169,6 @@ class SendMessage(QDialog):
             print(x.text)
         except:
             print("Could not send message")
-
 
 
 # main
