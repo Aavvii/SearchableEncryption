@@ -14,6 +14,6 @@ Test:
 10 req/s
 3 users/s
 
-![alt text](https://github.com/Aavvii/SearchableEncryption/API/stress_tests_locust/locust.png?raw=true)
+![alt text](https://github.com/Aavvii/SearchableEncryption/blob/main/API/stress_tests_locust/locust.png)
 
-![alt text](https://github.com/Aavvii/SearchableEncryption/API/stress_tests_locust/results.png?raw=true)
+![alt text](https://github.com/Aavvii/SearchableEncryption/blob/main/API/stress_tests_locust/results.png)
