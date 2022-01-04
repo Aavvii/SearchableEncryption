@@ -1,0 +1,5 @@
+create-jdbc-connection-pool --datasourceclassname com.microsoft.sqlserver.jdbc.SQLServerDataSource --restype javax.sql.DataSource mssql_pool
+set resources.jdbc-connection-pool.mssql_pool.property.password=sa resources.jdbc-connection-pool.mssql_pool.property.databaseName=searchable_encryption_db resources.jdbc-connection-pool.mssql_pool.property.serverName=localhost resources.jdbc-connection-pool.mssql_pool.property.user=sa resources.jdbc-connection-pool.mssql_pool.property.portNumber=1433
+
+create-jdbc-resource --enabled=true --poolName=mssql_pool --target=domain jdbc/mssql
+create-resource-ref --enabled=true --target=server jdbc/mssql
