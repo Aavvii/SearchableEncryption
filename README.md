@@ -5,6 +5,8 @@ State of the art: https://docs.google.com/document/d/1oQt7BhaTaggFPCdcK2Rq06mI8Z
 
 Trello link: https://trello.com/invite/b/o0MNjrn9/14ecbaaafe2225b9ccc168b8ca60535a/searchable-encryption
 
+Tehnical Report linl: https://docs.google.com/document/d/1goyosVqs-_y2wPscoA2SN4Usg1AsuIXJ5HEdf2utCwY/edit#heading=h.v3cyfl104hvy
+
 UML Diagram:
 ![alt text](https://github.com/Aavvii/SearchableEncryption/blob/main/SearchableEncryptionUML.drawio.png?raw=true)
 
